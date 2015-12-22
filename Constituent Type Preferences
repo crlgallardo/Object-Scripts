@@ -1,0 +1,55 @@
+SELECT [id]
+      ,[name]
+      ,[donor_category]
+      ,[donor_category_desc]
+      ,[alum_ind]
+  FROM [Datamart].[dbo].[Donor Category (Descriptive, Advancement)];
+  
+  SELECT *
+  FROM [All Constituents (Domain, Advancement)]
+  --WHERE ID IN ('R00000025', 'R01887400', 'R01887401', 'R0188740')
+  ORDER BY ID ASC;
+  
+  SELECT DISTINCT A.ID, B.ID, A.name, A.DONOR_CATEGORY, A.DONOR_CATEGORY_DESC, COUNT(*)
+  FROM [Donor Category (Descriptive, Advancement)] A, [All Constituents (Domain, Advancement)] B 
+  --WHERE donor_category = 'GVMT'
+  WHERE A.id = B.ID --AND B.ID IN ('R00000025', 'R01887400', 'R01887401')
+  GROUP BY A.ID, B.ID, A.name, A.DONOR_CATEGORY, A.DONOR_CATEGORY_DESC
+  --HAVING COUNT(*)>1;
+  
+  /* Constituent Type Preferences View from All Constituents View and Donor Category Table */
+  SELECT DISTINCT A.ID, 
+				  B.ID, 
+				  A.NAME, 
+				  B.PREF_DONOR_CATEGORY, 
+				  B.PREF_DONOR_CATEGORY_DESC, 
+				  A.DONOR_CATEGORY, 
+				  A.DONOR_CATEGORY_DESC, 
+				  COUNT(*)
+  FROM [Donor Category (Descriptive, Advancement)] A, [All Constituents (Domain, Advancement)] B 
+  --WHERE donor_category = 'GVMT'
+  WHERE A.id = B.ID /*AND B.PREF_DONOR_CATEGORY = A.DONOR_CATEGORY*/ --AND B.ID IN ('R00000025', 'R01887400', 'R01887401', 'R00000039', 'R00000034')
+  GROUP BY A.ID, 
+		   B.ID, 
+		   A.NAME, 
+		   B.PREF_DONOR_CATEGORY, 
+		   B.PREF_DONOR_CATEGORY_DESC,
+		   A.DONOR_CATEGORY, 
+		   A.DONOR_CATEGORY_DESC
+  ORDER BY A.id ASC;
+		   
+  
+
+ /* This script identifies the Donor Categories with IDs that are not in All Constituents View */ 
+  SELECT DISTINCT A.ID, COUNT(*)
+  FROM [Donor Category (Descriptive, Advancement)] A
+  WHERE A.id NOT IN (SELECT B.ID 
+  FROM [All Constituents (Domain, Advancement)] B)
+  GROUP BY A.ID
+  HAVING COUNT(*)>= 1;
+  
+  SELECT DISTINCT A.ID, B.ID, COUNT(*)
+  FROM [Donor Category (Descriptive, Advancement)] A
+  LEFT JOIN [All Constituents (Domain, Advancement)] B
+  ON A.id = B.ID --AND B.ID IN ('R00000034')
+  GROUP BY A.ID, B.ID;
