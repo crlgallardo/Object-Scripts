@@ -1,0 +1,23 @@
+SELECT TOP 1000 [id]
+      ,[citizenship_type]
+      ,citizenship_type_desc
+      ,[finaid_verification_ind]
+      ,[finaid_match_status]
+      ,[finaid_match_status_desc]
+  FROM [Datamart].[dbo].[Citizenship (Descriptive, General)];
+  
+  SELECT citizenship_type_desc, COUNT(*)
+  FROM Datamart.dbo.[Citizenship (Descriptive, General)]
+  WHERE citizenship_type <> 'NULL'
+  Group by citizenship_type_desc;
+
+SELECT citizenship_type, COUNT(*)
+  FROM Datamart.dbo.[Citizenship (Descriptive, General)]
+  WHERE citizenship_type <> 'NULL'
+  Group by citizenship_type;
+  
+ /*Citizenship view from Biographical Information View*/
+ select citizenship_type, citizenship_desc, COUNT(*)
+from dbo.[Biographical Information (Descriptive, General)]
+where citizenship_desc is not null
+group by citizenship_type, citizenship_desc;
