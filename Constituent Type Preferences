@@ -5,6 +5,21 @@ SELECT [id]
       ,[alum_ind]
   FROM [Datamart].[dbo].[Donor Category (Descriptive, Advancement)];
   
+  
+  CREATE VIEW roundCorner_Constituent_Types as
+  SELECT  ID + '_' + donor_category AS External_ID,
+		 (CASE WHEN donor_category = 'CORP' THEN 'ORG' + ID ELSE NULL END) AS rc_Bios__Account__c,
+		 (CASE WHEN donor_category <> 'CORP' THEN ID ELSE NULL END)AS rc_Bios__Contact__c, 
+		  DONOR_CATEGORY as rc_Bios__Code_Value__c,
+		 (SELECT 'TRUE' 
+		  FROM [All Constituents (Domain, Advancement)] A 
+		  WHERE A.ID = B.ID AND A.PREF_DONOR_CATEGORY = B.DONOR_CATEGORY) AS PRIMARY_CONSTITUENT_TYPE, 		 
+		 (CASE WHEN donor_category IN ('FACF', 'GRPF', 'PARF', 'STFF', 'TRSF') THEN 'FALSE' ELSE 'TRUE' END) AS rc_Bios__Active__c
+  FROM [Donor Category (Descriptive, Advancement)] B
+  ORDER BY ID DESC;
+  
+  SELECT * FROM roundCorner_Constituent_Types
+  
   SELECT *
   FROM [All Constituents (Domain, Advancement)]
   --WHERE ID IN ('R00000025', 'R01887400', 'R01887401', 'R0188740')
@@ -21,8 +36,8 @@ SELECT [id]
   SELECT DISTINCT A.ID, 
 				  B.ID, 
 				  A.NAME, 
-				  B.PREF_DONOR_CATEGORY, 
-				  B.PREF_DONOR_CATEGORY_DESC, 
+				  --B.PREF_DONOR_CATEGORY, 
+				  --B.PREF_DONOR_CATEGORY_DESC, 
 				  A.DONOR_CATEGORY, 
 				  A.DONOR_CATEGORY_DESC, 
 				  COUNT(*)
