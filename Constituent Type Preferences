@@ -3,10 +3,11 @@ SELECT [id]
       ,[donor_category]
       ,[donor_category_desc]
       ,[alum_ind]
-  FROM [Datamart].[dbo].[Donor Category (Descriptive, Advancement)];
+  FROM [Datamart].[dbo].[Donor Category (Descriptive, Advancement)]
+  ORDER BY ID DESC;
   
-  
-  CREATE VIEW roundCorner_Constituent_Types as
+  --CREATE VIEW roundCorner_Constituent_Types as
+  /*roundCorner Constituent Type view */
   SELECT  ID + '_' + donor_category AS External_ID,
 		 (CASE WHEN donor_category = 'CORP' THEN 'ORG' + ID ELSE NULL END) AS rc_Bios__Account__c,
 		 (CASE WHEN donor_category <> 'CORP' THEN ID ELSE NULL END)AS rc_Bios__Contact__c, 
@@ -17,32 +18,24 @@ SELECT [id]
 		 (CASE WHEN donor_category IN ('FACF', 'GRPF', 'PARF', 'STFF', 'TRSF') THEN 'FALSE' ELSE 'TRUE' END) AS rc_Bios__Active__c
   FROM [Donor Category (Descriptive, Advancement)] B
   ORDER BY ID DESC;
-  
-  SELECT * FROM roundCorner_Constituent_Types
+   
+  SELECT * FROM roundCorner_Constituent_Types ORDER BY External_ID DESC;
   
   SELECT *
   FROM [All Constituents (Domain, Advancement)]
   --WHERE ID IN ('R00000025', 'R01887400', 'R01887401', 'R0188740')
   ORDER BY ID ASC;
   
-  SELECT DISTINCT A.ID, B.ID, A.name, A.DONOR_CATEGORY, A.DONOR_CATEGORY_DESC, COUNT(*)
-  FROM [Donor Category (Descriptive, Advancement)] A, [All Constituents (Domain, Advancement)] B 
-  --WHERE donor_category = 'GVMT'
-  WHERE A.id = B.ID --AND B.ID IN ('R00000025', 'R01887400', 'R01887401')
-  GROUP BY A.ID, B.ID, A.name, A.DONOR_CATEGORY, A.DONOR_CATEGORY_DESC
-  --HAVING COUNT(*)>1;
-  
-  /* Constituent Type Preferences View from All Constituents View and Donor Category Table */
+  /* Constituent Type Preferences query from All Constituents View and Donor Category Table */
   SELECT DISTINCT A.ID, 
 				  B.ID, 
 				  A.NAME, 
-				  --B.PREF_DONOR_CATEGORY, 
-				  --B.PREF_DONOR_CATEGORY_DESC, 
+				  B.PREF_DONOR_CATEGORY, 
+				  B.PREF_DONOR_CATEGORY_DESC, 
 				  A.DONOR_CATEGORY, 
 				  A.DONOR_CATEGORY_DESC, 
 				  COUNT(*)
   FROM [Donor Category (Descriptive, Advancement)] A, [All Constituents (Domain, Advancement)] B 
-  --WHERE donor_category = 'GVMT'
   WHERE A.id = B.ID /*AND B.PREF_DONOR_CATEGORY = A.DONOR_CATEGORY*/ --AND B.ID IN ('R00000025', 'R01887400', 'R01887401', 'R00000039', 'R00000034')
   GROUP BY A.ID, 
 		   B.ID, 
@@ -51,7 +44,7 @@ SELECT [id]
 		   B.PREF_DONOR_CATEGORY_DESC,
 		   A.DONOR_CATEGORY, 
 		   A.DONOR_CATEGORY_DESC
-  ORDER BY A.id ASC;
+  ORDER BY A.id DESC;
 		   
   
 
