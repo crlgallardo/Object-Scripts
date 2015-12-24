@@ -6,20 +6,26 @@ SELECT [id]
   FROM [Datamart].[dbo].[Donor Category (Descriptive, Advancement)]
   ORDER BY ID DESC;
   
-  --CREATE VIEW roundCorner_Constituent_Types as
+  drop view roundcorner_constituent_types;
+  CREATE VIEW roundCorner_Constituent_Types as
   /*roundCorner Constituent Type view */
-  SELECT  ID + '_' + donor_category AS External_ID,
+  SELECT (CASE WHEN donor_category = 'CORP' THEN 'ORG' + ID + '_' + donor_category ELSE ID + '_' + donor_category END) AS External_ID,
 		 (CASE WHEN donor_category = 'CORP' THEN 'ORG' + ID ELSE NULL END) AS rc_Bios__Account__c,
 		 (CASE WHEN donor_category <> 'CORP' THEN ID ELSE NULL END)AS rc_Bios__Contact__c, 
 		  DONOR_CATEGORY as rc_Bios__Code_Value__c,
 		 (SELECT 'TRUE' 
 		  FROM [All Constituents (Domain, Advancement)] A 
-		  WHERE A.ID = B.ID AND A.PREF_DONOR_CATEGORY = B.DONOR_CATEGORY) AS PRIMARY_CONSTITUENT_TYPE, 		 
-		 (CASE WHEN donor_category IN ('FACF', 'GRPF', 'PARF', 'STFF', 'TRSF') THEN 'FALSE' ELSE 'TRUE' END) AS rc_Bios__Active__c
+		  WHERE A.ID = B.ID AND A.PREF_DONOR_CATEGORY = B.DONOR_CATEGORY) AS rc_Bios__Primary__c, 
+		  'User Defined' AS rc_Bios__Status__c,
+		  --NULL AS rc_Bios__End_Date__c,
+		  --NULL AS rc_Bios__Start_Date__c,		 
+		 (CASE WHEN donor_category IN ('FACF', 'GRPF', 'PARF', 'STFF', 'TRSF') THEN 'FALSE' ELSE 'TRUE' END) AS rc_Bios__Active__c,
+		  '01261000000FY77AAG' AS Record_Type_ID
   FROM [Donor Category (Descriptive, Advancement)] B
   ORDER BY ID DESC;
-   
-  SELECT * FROM roundCorner_Constituent_Types ORDER BY External_ID DESC;
+  
+  SELECT * FROM roundCorner_Constituent_Types /*WHERE rc_Bios__Code_Value__c <> 'NRC'*/ ORDER BY External_ID DESC;
+  SELECT COUNT(*) FROM roundCorner_Constituent_Types WHERE rc_Bios__Code_Value__c = 'NRC' 
   
   SELECT *
   FROM [All Constituents (Domain, Advancement)]
@@ -36,7 +42,7 @@ SELECT [id]
 				  A.DONOR_CATEGORY_DESC, 
 				  COUNT(*)
   FROM [Donor Category (Descriptive, Advancement)] A, [All Constituents (Domain, Advancement)] B 
-  WHERE A.id = B.ID /*AND B.PREF_DONOR_CATEGORY = A.DONOR_CATEGORY*/ --AND B.ID IN ('R00000025', 'R01887400', 'R01887401', 'R00000039', 'R00000034')
+  WHERE A.id = B.ID AND B.PREF_DONOR_CATEGORY = 'NRC' /*A.DONOR_CATEGORY*/ --AND B.ID IN ('R00000025', 'R01887400', 'R01887401', 'R00000039', 'R00000034')
   GROUP BY A.ID, 
 		   B.ID, 
 		   A.NAME, 
@@ -45,9 +51,7 @@ SELECT [id]
 		   A.DONOR_CATEGORY, 
 		   A.DONOR_CATEGORY_DESC
   ORDER BY A.id DESC;
-		   
-  
-
+		  
  /* This script identifies the Donor Categories with IDs that are not in All Constituents View */ 
   SELECT DISTINCT A.ID, COUNT(*)
   FROM [Donor Category (Descriptive, Advancement)] A
