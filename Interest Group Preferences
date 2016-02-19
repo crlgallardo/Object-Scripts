@@ -1,0 +1,63 @@
+--Version 1------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT (CASE WHEN NAME LIKE '%FOUNDATION%' THEN 'ORG' + ID + '_' + INTEREST_GROUP ELSE ID + '_' + INTEREST_GROUP END) AS rc_Bios__External_ID__c,
+	   (CASE WHEN NAME LIKE '%FOUNDATION%' THEN 'ORG' + ID ELSE NULL END) AS rc_Bios__Account__c,
+	   (CASE WHEN NAME NOT LIKE '%FOUNDATION%' THEN ID ELSE NULL END) AS rc_Bios__Contact__c,
+	   NAME AS CONTACT_FULL_NAME,
+	   INTEREST_GROUP AS rc_Bios__Code_Value__c,
+	   INTEREST_GROUP_DESCRIPTION,
+	   INTEREST_GROUP_ACTIVITY_DATE AS rc_Bios__Start_Date__c,
+	   -- AS rc_Bios__End_Date__c, -- WHAT SHOULD WE DO FOR END DATE?
+	   'User Defined' AS rc_Bios__Status__c,
+	   'TRUE' AS rc_Bios__Active__c
+FROM [INTEREST GROUPS (Descriptive, Advancement)];
+
+--Version 2------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE VIEW roundcorner_Interest_Groups_Preferences as 
+SELECT  (CASE WHEN NAME LIKE '%FOUNDATION%' 
+				OR NAME LIKE '%MEDICAL INST%'
+				OR NAME LIKE '%WKNO%'
+				OR NAME LIKE '%GREATER MEMPHIS%'
+				OR NAME LIKE '%TEACH FOR AMERICA%'
+				OR NAME LIKE '%ASSOCIAT%'
+				OR NAME LIKE '%CHURCH'
+				OR NAME LIKE '%ACCENTU%'
+				OR NAME LIKE '%NATIONAL%'
+				OR NAME LIKE '%UNIVERSITY%'
+				OR NAME LIKE '%CORPORATION%'
+				OR NAME LIKE '%CHARITABLE TRUST%' THEN 'ORG' + ID + '_' + INTEREST_GROUP ELSE ID + '_' + INTEREST_GROUP END) AS rc_Bios__External_ID__c,
+		(CASE WHEN NAME LIKE '%FOUNDATION%'
+				OR NAME LIKE '%MEDICAL INST%'
+				OR NAME LIKE '%WKNO%'
+				OR NAME LIKE '%GREATER MEMPHIS%'
+				OR NAME LIKE '%TEACH FOR AMERICA%'
+				OR NAME LIKE '%ASSOCIAT%'
+				OR NAME LIKE '%CHURCH'
+				OR NAME LIKE '%ACCENTU%'
+				OR NAME LIKE '%NATIONAL%'
+				OR NAME LIKE '%UNIVERSITY%'
+				OR NAME LIKE '%CORPORATION%'
+				OR NAME LIKE '%CHARITABLE TRUST%' THEN 'ORG' + ID ELSE NULL END) AS rc_Bios__Account__c,
+		(CASE WHEN NAME NOT LIKE '%FOUNDATION%'
+				AND NAME NOT LIKE '%MEDICAL INST%'
+				AND  NAME NOT LIKE '%WKNO%'
+				AND  NAME NOT LIKE '%GREATER MEMPHIS%'
+				AND  NAME NOT LIKE '%TEACH FOR AMERICA%'
+				AND  NAME NOT LIKE '%ASSOCIAT%'
+				AND  NAME NOT LIKE '%CHURCH'
+				AND  NAME NOT LIKE '%ACCENTU%'
+				AND  NAME NOT LIKE '%NATIONAL%'
+				AND  NAME NOT LIKE '%UNIVERSITY%'
+				AND  NAME NOT LIKE '%CORPORATION%'
+				AND  NAME NOT LIKE '%CHARITABLE TRUST%' 
+				THEN ID ELSE NULL END) AS rc_Bios__Contact__c,
+		NAME AS CONTACT_FULL_NAME,
+		INTEREST_GROUP AS rc_Bios__Code_Value__c,
+		INTEREST_GROUP_DESCRIPTION,
+		INTEREST_GROUP_ACTIVITY_DATE AS START_DATE__c,
+		-- AS rc_Bios__End_Date__c, -- WHAT SHOULD WE DO FOR END DATE?
+		'User Defined' AS rc_Bios__Status__c,
+		'TRUE' AS rc_Bios__Active__c
+FROM [INTEREST GROUPS (Descriptive, Advancement)]
