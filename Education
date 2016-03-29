@@ -1,0 +1,212 @@
+DROP VIEW roundcorner_education;
+
+CREATE VIEW roundcorner_education AS
+SELECT cons.ID AS rC_Education__Contact__c, 
+       'ORG'+cons.INSTITUTION AS rC_Education__Institution_Name__c,
+       cons.ID+'_'+CAST(cons.degree_number AS VARCHAR(5)) AS Legacy_External_Id__c,
+       cons.academic_year AS rC_Education__Class_Year__c,
+       (CASE WHEN cons.rhodes_degree_ind = 'Y' AND SUBSTRING(cons.degree,1,1) IN ('M','D') THEN 'Master of Science'
+             WHEN cons.rhodes_degree_ind = 'Y' AND cons.degree = 'BS' THEN 'Bachelor of Science'
+             WHEN cons.rhodes_degree_ind = 'Y' AND cons.degree IN ('BM','BD','BA') THEN 'Bachelor of Arts'
+             WHEN cons.rhodes_degree_ind = 'N' AND cons.degree_desc = 'Master of Business Admin' THEN 'Master of Business Administration'
+             WHEN cons.rhodes_degree_ind = 'N' AND cons.degree_desc = 'Doctor of Business Admin' THEN 'Doctor of Business Administration'
+             WHEN cons.rhodes_degree_ind = 'N' AND cons.degree_desc = 'Doctor of Veterinarian Med' THEN 'Doctor of Veterinarian Medicine'
+             WHEN cons.rhodes_degree_ind = 'N' AND cons.degree_desc = 'Master of Christian Ed' THEN 'Master of Christian Education'
+             WHEN cons.rhodes_degree_ind = 'N' AND cons.degree_desc = 'Master of Hospital Admin' THEN 'Master of Hospital Administration'
+             WHEN cons.rhodes_degree_ind = 'N' AND cons.degree_desc = 'Master of Public Admin' THEN 'Master of Public Administration' 
+             WHEN cons.rhodes_degree_ind = 'N' THEN cons.degree_desc 
+        ELSE NULL END) AS rC_Education__Degree_Certificate__c,
+       cons.academic_year AS rC_Education__Degree_Year__c,
+       rd.DEPARTMENT1_DESC AS rC_Education__Department__c,
+       /*cons.academic_year AS rC_Education__End_Year__c, they do not want to populate this from legacy*/
+       cons.academic_year AS rC_Education__Graduation_Year__c,
+    (CASE   WHEN cons.major1_desc = 'Anth/Soc and Psych' THEN 'Anthropology/Sociology/Psychology'
+		WHEN cons.major1_desc = 'Anthro/Sociology and Biology' THEN 'Anthropology/Sociology/Biology'
+		WHEN cons.major1_desc = 'Anthro/Sociology/History' THEN 'Anthropology/Sociology/History'
+		WHEN cons.major1_desc = 'Anthro/Sociology/Philosophy' THEN 'Anthropology/Sociology/Philosophy'
+		WHEN cons.major1_desc = 'Anthro/Soc/Religious Studies' THEN 'Anthropology/Sociology/Religious Studies'
+		WHEN cons.major1_desc = 'Art and Art History' THEN 'Art/Art History'
+		WHEN cons.major1_desc = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.major1_desc = 'Business Admin & Computer Sci' THEN 'Business Administration/Computer Science'
+		WHEN cons.major1_desc = 'Business Admin/English' THEN 'Business Administration/English'
+		WHEN cons.major1_desc = 'Business Admin & Internat St' THEN 'Business Administration/International Studies'
+		WHEN cons.major1_desc = 'Business Admin & Mathematics' THEN 'Business Administration/Mathematics'
+		WHEN cons.major1_desc = 'Business Administra/Psychology' THEN 'Business Administration/Psychology'
+		WHEN cons.major1_desc = 'Economics & Anthro/Sociology' THEN 'Economics/Anthropology/Sociology'
+		WHEN cons.major1_desc = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.major1_desc = 'Economics/Commerce & Business' THEN 'Economics/Commerce and Business'
+		WHEN cons.major1_desc = 'Economics & Internatl Studies' THEN 'Economics/International Studies'
+		WHEN cons.major1_desc = 'Foreign Lang & Literature' THEN 'Foreign Language and Literature'
+		WHEN cons.major1_desc = 'History/Gender&Sexuality Study' THEN 'History/Gender & Sexuality Study'
+		WHEN cons.major1_desc = 'Int''l Studies/Anthro/Soc' THEN 'International Studies/Anthropology/Sociology'
+		WHEN cons.major1_desc = 'Int''l Studies & Business Admin' THEN 'International Studies/Business Administration'
+		WHEN cons.major1_desc = 'International Studies & French' THEN 'International Studies/French'
+		WHEN cons.major1_desc = 'International Studies & German' THEN 'International Studies/German'
+		WHEN cons.major1_desc = 'Internationl Studies & History' THEN 'International Studies/History'
+		WHEN cons.major1_desc = 'Interntnl Studies & Polit Sci' THEN 'International Studies/Political Science'
+		WHEN cons.major1_desc = 'Int''l Studies/Russian Studies' THEN 'International Studies/Russian Studies'
+		WHEN cons.major1_desc = 'International Studies&Spanish' THEN 'International Studies/Spanish'
+		WHEN cons.major1_desc = 'Intl Studies/Urban Studies' THEN 'International Studies/Urban Studies'
+		WHEN cons.major1_desc = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+		WHEN cons.major1_desc = 'Urban & Community Health' THEN 'Urban and Community Health'
+		WHEN cons.major1_desc = 'Biochemistry & Molecular Biol' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.major1_desc = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.major1_desc = 'Biology/Anthro/Sociology' THEN 'Biology/Anthropology/Sociology'
+		WHEN cons.major1_desc = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.major1_desc = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+  ELSE cons.major1_desc END) AS rC_Education__Major_1__c,
+  (CASE   WHEN cons.major2_desc = 'Anth/Soc and Psych' THEN 'Anthropology/Sociology/Psychology'
+		WHEN cons.major2_desc = 'Anthro/Sociology and Biology' THEN 'Anthropology/Sociology/Biology'
+		WHEN cons.major2_desc = 'Anthro/Sociology/History' THEN 'Anthropology/Sociology/History'
+		WHEN cons.major2_desc = 'Anthro/Sociology/Philosophy' THEN 'Anthropology/Sociology/Philosophy'
+		WHEN cons.major2_desc = 'Anthro/Soc/Religious Studies' THEN 'Anthropology/Sociology/Religious Studies'
+		WHEN cons.major2_desc = 'Art and Art History' THEN 'Art/Art History'
+		WHEN cons.major2_desc = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.major2_desc = 'Business Admin & Computer Sci' THEN 'Business Administration/Computer Science'
+		WHEN cons.major2_desc = 'Business Admin/English' THEN 'Business Administration/English'
+		WHEN cons.major2_desc = 'Business Admin & Internat St' THEN 'Business Administration/International Studies'
+		WHEN cons.major2_desc = 'Business Admin & Mathematics' THEN 'Business Administration/Mathematics'
+		WHEN cons.major2_desc = 'Business Administra/Psychology' THEN 'Business Administration/Psychology'
+		WHEN cons.major2_desc = 'Economics & Anthro/Sociology' THEN 'Economics/Anthropology/Sociology'
+		WHEN cons.major2_desc = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.major2_desc = 'Economics/Commerce & Business' THEN 'Economics/Commerce and Business'
+		WHEN cons.major2_desc = 'Economics & Internatl Studies' THEN 'Economics/International Studies'
+		WHEN cons.major2_desc = 'Foreign Lang & Literature' THEN 'Foreign Language and Literature'
+		WHEN cons.major2_desc = 'History/Gender&Sexuality Study' THEN 'History/Gender & Sexuality Study'
+		WHEN cons.major2_desc = 'Int''l Studies/Anthro/Soc' THEN 'International Studies/Anthropology/Sociology'
+		WHEN cons.major2_desc = 'Int''l Studies & Business Admin' THEN 'International Studies/Business Administration'
+		WHEN cons.major2_desc = 'International Studies & French' THEN 'International Studies/French'
+		WHEN cons.major2_desc = 'International Studies & German' THEN 'International Studies/German'
+		WHEN cons.major2_desc = 'Internationl Studies & History' THEN 'International Studies/History'
+		WHEN cons.major2_desc = 'Interntnl Studies & Polit Sci' THEN 'International Studies/Political Science'
+		WHEN cons.major2_desc = 'Int''l Studies/Russian Studies' THEN 'International Studies/Russian Studies'
+		WHEN cons.major2_desc = 'International Studies&Spanish' THEN 'International Studies/Spanish'
+		WHEN cons.major2_desc = 'Intl Studies/Urban Studies' THEN 'International Studies/Urban Studies'
+		WHEN cons.major2_desc = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+		WHEN cons.major2_desc = 'Urban & Community Health' THEN 'Urban and Community Health'
+		WHEN cons.major2_desc = 'Biochemistry & Molecular Biol' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.major2_desc = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.major2_desc = 'Biology/Anthro/Sociology' THEN 'Biology/Anthropology/Sociology'
+		WHEN cons.major2_desc = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.major2_desc = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+  ELSE cons.major2_desc END) AS rC_Education__Major_2__c,
+  (CASE   WHEN cons.FIRST_MINOR_DESC = 'Anth/Soc and Psych' THEN 'Anthropology/Sociology/Psychology'
+		WHEN cons.FIRST_MINOR_DESC = 'Anthro/Sociology and Biology' THEN 'Anthropology/Sociology/Biology'
+		WHEN cons.FIRST_MINOR_DESC = 'Anthro/Sociology/History' THEN 'Anthropology/Sociology/History'
+		WHEN cons.FIRST_MINOR_DESC = 'Anthro/Sociology/Philosophy' THEN 'Anthropology/Sociology/Philosophy'
+		WHEN cons.FIRST_MINOR_DESC = 'Anthro/Soc/Religious Studies' THEN 'Anthropology/Sociology/Religious Studies'
+		WHEN cons.FIRST_MINOR_DESC = 'Art and Art History' THEN 'Art/Art History'
+		WHEN cons.FIRST_MINOR_DESC = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.FIRST_MINOR_DESC = 'Business Admin & Computer Sci' THEN 'Business Administration/Computer Science'
+		WHEN cons.FIRST_MINOR_DESC = 'Business Admin/English' THEN 'Business Administration/English'
+		WHEN cons.FIRST_MINOR_DESC = 'Business Admin & Internat St' THEN 'Business Administration/International Studies'
+		WHEN cons.FIRST_MINOR_DESC = 'Business Admin & Mathematics' THEN 'Business Administration/Mathematics'
+		WHEN cons.FIRST_MINOR_DESC = 'Business Administra/Psychology' THEN 'Business Administration/Psychology'
+		WHEN cons.FIRST_MINOR_DESC = 'Economics & Anthro/Sociology' THEN 'Economics/Anthropology/Sociology'
+		WHEN cons.FIRST_MINOR_DESC = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.FIRST_MINOR_DESC = 'Economics/Commerce & Business' THEN 'Economics/Commerce and Business'
+		WHEN cons.FIRST_MINOR_DESC = 'Economics & Internatl Studies' THEN 'Economics/International Studies'
+		WHEN cons.FIRST_MINOR_DESC = 'Foreign Lang & Literature' THEN 'Foreign Language and Literature'
+		WHEN cons.FIRST_MINOR_DESC = 'History/Gender&Sexuality Study' THEN 'History/Gender & Sexuality Study'
+		WHEN cons.FIRST_MINOR_DESC = 'Int''l Studies/Anthro/Soc' THEN 'International Studies/Anthropology/Sociology'
+		WHEN cons.FIRST_MINOR_DESC = 'Int''l Studies & Business Admin' THEN 'International Studies/Business Administration'
+		WHEN cons.FIRST_MINOR_DESC = 'International Studies & French' THEN 'International Studies/French'
+		WHEN cons.FIRST_MINOR_DESC = 'International Studies & German' THEN 'International Studies/German'
+		WHEN cons.FIRST_MINOR_DESC = 'Internationl Studies & History' THEN 'International Studies/History'
+		WHEN cons.FIRST_MINOR_DESC = 'Interntnl Studies & Polit Sci' THEN 'International Studies/Political Science'
+		WHEN cons.FIRST_MINOR_DESC = 'Int''l Studies/Russian Studies' THEN 'International Studies/Russian Studies'
+		WHEN cons.FIRST_MINOR_DESC = 'International Studies&Spanish' THEN 'International Studies/Spanish'
+		WHEN cons.FIRST_MINOR_DESC = 'Intl Studies/Urban Studies' THEN 'International Studies/Urban Studies'
+		WHEN cons.FIRST_MINOR_DESC = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+		WHEN cons.FIRST_MINOR_DESC = 'Urban & Community Health' THEN 'Urban and Community Health'
+		WHEN cons.FIRST_MINOR_DESC = 'Biochemistry & Molecular Biol' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.FIRST_MINOR_DESC = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.FIRST_MINOR_DESC = 'Biology/Anthro/Sociology' THEN 'Biology/Anthropology/Sociology'
+		WHEN cons.FIRST_MINOR_DESC = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.FIRST_MINOR_DESC = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+  ELSE cons.FIRST_MINOR_DESC END) AS rC_Education__Minor_1__c,
+  (CASE   WHEN cons.SECOND_MINOR_DESC = 'Anth/Soc and Psych' THEN 'Anthropology/Sociology/Psychology'
+		WHEN cons.SECOND_MINOR_DESC = 'Anthro/Sociology and Biology' THEN 'Anthropology/Sociology/Biology'
+		WHEN cons.SECOND_MINOR_DESC = 'Anthro/Sociology/History' THEN 'Anthropology/Sociology/History'
+		WHEN cons.SECOND_MINOR_DESC = 'Anthro/Sociology/Philosophy' THEN 'Anthropology/Sociology/Philosophy'
+		WHEN cons.SECOND_MINOR_DESC = 'Anthro/Soc/Religious Studies' THEN 'Anthropology/Sociology/Religious Studies'
+		WHEN cons.SECOND_MINOR_DESC = 'Art and Art History' THEN 'Art/Art History'
+		WHEN cons.SECOND_MINOR_DESC = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.SECOND_MINOR_DESC = 'Business Admin & Computer Sci' THEN 'Business Administration/Computer Science'
+		WHEN cons.SECOND_MINOR_DESC = 'Business Admin/English' THEN 'Business Administration/English'
+		WHEN cons.SECOND_MINOR_DESC = 'Business Admin & Internat St' THEN 'Business Administration/International Studies'
+		WHEN cons.SECOND_MINOR_DESC = 'Business Admin & Mathematics' THEN 'Business Administration/Mathematics'
+		WHEN cons.SECOND_MINOR_DESC = 'Business Administra/Psychology' THEN 'Business Administration/Psychology'
+		WHEN cons.SECOND_MINOR_DESC = 'Economics & Anthro/Sociology' THEN 'Economics/Anthropology/Sociology'
+		WHEN cons.SECOND_MINOR_DESC = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.SECOND_MINOR_DESC = 'Economics/Commerce & Business' THEN 'Economics/Commerce and Business'
+		WHEN cons.SECOND_MINOR_DESC = 'Economics & Internatl Studies' THEN 'Economics/International Studies'
+		WHEN cons.SECOND_MINOR_DESC = 'Foreign Lang & Literature' THEN 'Foreign Language and Literature'
+		WHEN cons.SECOND_MINOR_DESC = 'History/Gender&Sexuality Study' THEN 'History/Gender & Sexuality Study'
+		WHEN cons.SECOND_MINOR_DESC = 'Int''l Studies/Anthro/Soc' THEN 'International Studies/Anthropology/Sociology'
+		WHEN cons.SECOND_MINOR_DESC = 'Int''l Studies & Business Admin' THEN 'International Studies/Business Administration'
+		WHEN cons.SECOND_MINOR_DESC = 'International Studies & French' THEN 'International Studies/French'
+		WHEN cons.SECOND_MINOR_DESC = 'International Studies & German' THEN 'International Studies/German'
+		WHEN cons.SECOND_MINOR_DESC = 'Internationl Studies & History' THEN 'International Studies/History'
+		WHEN cons.SECOND_MINOR_DESC = 'Interntnl Studies & Polit Sci' THEN 'International Studies/Political Science'
+		WHEN cons.SECOND_MINOR_DESC = 'Int''l Studies/Russian Studies' THEN 'International Studies/Russian Studies'
+		WHEN cons.SECOND_MINOR_DESC = 'International Studies&Spanish' THEN 'International Studies/Spanish'
+		WHEN cons.SECOND_MINOR_DESC = 'Intl Studies/Urban Studies' THEN 'International Studies/Urban Studies'
+		WHEN cons.SECOND_MINOR_DESC = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+		WHEN cons.SECOND_MINOR_DESC = 'Urban & Community Health' THEN 'Urban and Community Health'
+		WHEN cons.SECOND_MINOR_DESC = 'Biochemistry & Molecular Biol' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.SECOND_MINOR_DESC = 'Biochemistry and Molecular Bio' THEN 'Biochemistry/Molecular Biology'
+		WHEN cons.SECOND_MINOR_DESC = 'Biology/Anthro/Sociology' THEN 'Biology/Anthropology/Sociology'
+		WHEN cons.SECOND_MINOR_DESC = 'Economics & Business Admin' THEN 'Economics/Business Administration'
+		WHEN cons.SECOND_MINOR_DESC = 'Mathematics & Comput Sci' THEN 'Mathematics/Computer Science'
+  ELSE cons.SECOND_MINOR_DESC END) AS rC_Education__Minor_2__c,
+       SUBSTRING(cons.DEGREE_COMMENT,1,255) AS rC_Education__Other_Information__c,
+       (CASE WHEN cons.institution = '1730' THEN 'TRUE' ELSE 'FALSE' END) AS rC_Education__Preferred__c,
+       /*SUBSTRING(cons.academic_year_desc,1,4) AS rC_Education__Start_Year__c, they do not want to populate this from legacy*/
+       (CASE WHEN rhodes_degree_ind = 'Y' THEN CONVERT(varchar(10),cons.degree_date,101) ELSE NULL END) AS Degree_Date__c,
+ (CASE WHEN cons.rhodes_degree_ind = 'Y' AND cons.latin_honor = 'cum laude' THEN 'Cum Laude'
+       WHEN cons.rhodes_degree_ind = 'Y' AND cons.latin_honor = 'summa cum laude' THEN 'Summa Cum Laude'
+       WHEN cons.rhodes_degree_ind = 'Y' AND cons.latin_honor = 'magna cum laude' THEN 'Magna Cum Laude'
+       WHEN cons.rhodes_degree_ind = 'Y' THEN cons.latin_honor 
+  ELSE NULL END) AS Latin_Honor__c,
+       (CASE WHEN rhodes_degree_ind = 'Y' THEN '0124B0000008jCrQAI' ELSE '0124B0000008jCwQAI' END) AS RecordTypeId   
+FROM  dbo.[Constituent Degrees (Descriptive, Advancement)] cons
+join dbo.RC_DEGREE rd
+on rd.ID = cons.id
+AND RD.DEGREE_NUMBER = CONS.degree_number;
+
+
+
+
+select distinct cons.major2_desc
+FROM  dbo.[Constituent Degrees (Descriptive, Advancement)] cons
+join dbo.RC_DEGREE rd
+on rd.ID = cons.id
+AND RD.DEGREE_NUMBER = CONS.degree_number
+where rhodes_degree_ind = 'Y'
+union
+select distinct cons.major2_desc
+FROM  dbo.[Constituent Degrees (Descriptive, Advancement)] cons
+join dbo.RC_DEGREE rd
+on rd.ID = cons.id
+AND RD.DEGREE_NUMBER = CONS.degree_number
+where rhodes_degree_ind = 'Y'
+union
+select distinct cons.FIRST_MINOR_DESC
+FROM  dbo.[Constituent Degrees (Descriptive, Advancement)] cons
+join dbo.RC_DEGREE rd
+on rd.ID = cons.id
+AND RD.DEGREE_NUMBER = CONS.degree_number
+where rhodes_degree_ind = 'Y'
+union
+select distinct cons.SECOND_MINOR_DESC
+FROM  dbo.[Constituent Degrees (Descriptive, Advancement)] cons
+join dbo.RC_DEGREE rd
+on rd.ID = cons.id
+AND RD.DEGREE_NUMBER = CONS.degree_number
+where rhodes_degree_ind = 'Y'
+order by 1;
+
+
+select * 
+from roundcorner_education;
