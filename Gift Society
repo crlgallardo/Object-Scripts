@@ -122,7 +122,7 @@ order by gift_society_year ASC;
 -----------------------------------------------------------------------------------
 /*This view is for Total pledges to Annual Fund during current Fiscal Year with no gift society*/
 
-CREATE VIEW roundcorner_Pledge_Society_AF AS
+CREATE VIEW roundcorner_Pledge_Society_AnnualFund AS
 SELECT DISTINCT id + '_' + CONVERT(VARCHAR(6), ROW_NUMBER() OVER (ORDER BY ID)) AS rc_Bios__External_ID__c,
 				id AS rc_Bios__Contact__c,
 				(CASE WHEN pledge_society = 'DHPH' THEN 'AFP-T'
@@ -157,7 +157,7 @@ FROM roundCorner_pledge_society_af;
 -------------------------------------------
 /*This view is for Total Pledges to Athletics during current fiscal year with no gift society*/
 
-CREATE VIEW roundcorner_Pledge_Society_ATH AS
+CREATE VIEW roundcorner_Pledge_Society_Athletics AS
 SELECT DISTINCT id + '_' + CONVERT(VARCHAR(6), ROW_NUMBER() OVER (ORDER BY ID)) AS rc_Bios__External_ID__c,
 				id AS rc_Bios__Contact__c,
 				(CASE WHEN pledge_society = 'AHAL' THEN 'LCP-P'
