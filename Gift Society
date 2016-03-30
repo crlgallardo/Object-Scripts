@@ -1,0 +1,183 @@
+SELECT DISTINCT gift_society, gift_society_desc, gift_society_priority
+FROM [Gift Society (Descriptive, Advancement)]
+WHERE ID != 'NULL' and gift_society_desc like '%HERITAGE%' 
+
+SELECT *
+FROM [Gift Society (Descriptive, Advancement)]
+WHERE gift_society_desc = 'Heritage Pledge Society'
+ORDER BY gift_society_year desc
+
+-----------------------------------------------------------------------------------------
+/*This view is for all other gift society records*/
+
+CREATE VIEW roundcorner_Gift_Society AS
+SELECT DISTINCT (CASE WHEN gift_society = 'DHPH' THEN NULL
+				WHEN gift_society = 'DHGR' THEN NULL
+				WHEN gift_society = 'DHFL' THEN NULL
+				WHEN gift_society = 'DHBN' THEN NULL
+				WHEN gift_society = 'DHST' THEN NULL
+				WHEN gift_society = 'DHPT' THEN NULL
+				WHEN gift_society = 'RBPA' THEN NULL
+				WHEN gift_society = 'RBSR' THEN NULL
+				WHEN gift_society = 'RBAS' THEN NULL
+				WHEN gift_society = 'RBMR' THEN NULL
+				WHEN gift_society = 'DEAN' THEN NULL
+				WHEN gift_society = 'CLST' THEN NULL
+				WHEN gift_society = 'TOWR' THEN NULL
+				WHEN gift_society = 'LOYC' THEN NULL
+				WHEN gift_society = 'DNR2' THEN NULL
+				WHEN gift_society = 'AHAL' THEN NULL
+				WHEN gift_society = 'ALEG' THEN NULL
+				WHEN gift_society = 'AALL' THEN NULL
+				WHEN gift_society = 'ACMP' THEN NULL
+				WHEN gift_society = 'AMVP' THEN NULL
+				WHEN gift_society = 'ALYX' THEN NULL
+				WHEN gift_society = 'ASTR' THEN NULL
+				WHEN gift_society = 'ACPT' THEN NULL
+				WHEN gift_society = 'APLA' THEN NULL
+				WHEN gift_society = 'RHM' THEN NULL
+				WHEN gift_society = 'RHRH' THEN NULL
+			ELSE id + '_' + CONVERT(VARCHAR(6), ROW_NUMBER() OVER (ORDER BY ID)) END) AS rc_Bios__External_ID__c,
+				id AS rc_Bios__Contact__c,
+				name,
+		  (CASE WHEN gift_society = 'GDPH' THEN 'AF-T'
+				WHEN gift_society = 'GDGR' THEN 'AF-S'
+				WHEN gift_society = 'GDFL' THEN 'AF-Q'
+				WHEN gift_society = 'GDBN' THEN 'AF-O'
+				WHEN gift_society = 'GDST' THEN 'AF-N'
+				WHEN gift_society = 'GDPT' THEN 'AF-M'
+				WHEN gift_society = 'GRPA' THEN 'AF-L'
+				WHEN gift_society = 'GRSR' THEN 'AF-K'
+				WHEN gift_society = 'GRAS' THEN 'AF-J'
+				WHEN gift_society = 'GRMR' THEN 'AF-I'
+				WHEN gift_society = 'GDEN' THEN 'AF-H'
+				WHEN gift_society = 'GCLT' THEN 'AF-G'
+				WHEN gift_society = 'GTWR' THEN 'AF-F'
+				WHEN gift_society = 'GLYC' THEN 'AF-E'
+				WHEN gift_society = 'GDR2' THEN 'AF-D'
+				WHEN gift_society = 'GHAL' THEN 'LC-P'
+				WHEN gift_society = 'GLEG' THEN 'LC-N'
+				WHEN gift_society = 'GALL' THEN 'LC-M'
+				WHEN gift_society = 'GCMP' THEN 'LC-K'
+				WHEN gift_society = 'GMVP' THEN 'LC-I'
+				WHEN gift_society = 'GLYX' THEN 'LC-G'
+				WHEN gift_society = 'GSTR' THEN 'LC-F'
+				WHEN gift_society = 'GCPT' THEN 'LC-E'
+				WHEN gift_society = 'GPLA' THEN 'LC-D'
+				WHEN gift_society = 'GMCS' THEN 'MHC-M'
+				WHEN gift_society = 'GMCI' THEN 'MHC-K'
+				WHEN gift_society = 'GMCM' THEN 'MHC-I'
+				WHEN gift_society = 'GMCP' THEN 'MHC-G'
+				WHEN gift_society = 'GMCD' THEN 'MHC-F'
+				WHEN gift_society = 'GMCF' THEN 'MHC-E'
+				WHEN gift_society = 'BELL' THEN 'BELLINGRATH'
+				WHEN gift_society = 'BENE' THEN 'BENEFACTOR'
+				WHEN gift_society = 'MHCL' THEN 'MHC-LIFE'
+				WHEN gift_society = 'MHCE' THEN 'MHC-ENDOW'
+				WHEN gift_society = 'HON' AND assignment = 'DM' THEN 'HONDM'
+				WHEN gift_society = 'HON' AND assignment = 'NR' THEN 'HONNR'
+				WHEN gift_society = 'HON' AND assignment = 'SA' THEN 'HONAM'
+				WHEN gift_society = 'DHPH' THEN NULL
+				WHEN gift_society = 'DHGR' THEN NULL
+				WHEN gift_society = 'DHFL' THEN NULL
+				WHEN gift_society = 'DHBN' THEN NULL
+				WHEN gift_society = 'DHST' THEN NULL
+				WHEN gift_society = 'DHPT' THEN NULL
+				WHEN gift_society = 'RBPA' THEN NULL
+				WHEN gift_society = 'RBSR' THEN NULL
+				WHEN gift_society = 'RBAS' THEN NULL
+				WHEN gift_society = 'RBMR' THEN NULL
+				WHEN gift_society = 'DEAN' THEN NULL
+				WHEN gift_society = 'CLST' THEN NULL
+				WHEN gift_society = 'TOWR' THEN NULL
+				WHEN gift_society = 'LOYC' THEN NULL
+				WHEN gift_society = 'DNR2' THEN NULL
+				WHEN gift_society = 'AHAL' THEN NULL
+				WHEN gift_society = 'ALEG' THEN NULL
+				WHEN gift_society = 'AALL' THEN NULL
+				WHEN gift_society = 'ACMP' THEN NULL
+				WHEN gift_society = 'AMVP' THEN NULL
+				WHEN gift_society = 'ALYX' THEN NULL
+				WHEN gift_society = 'ASTR' THEN NULL
+				WHEN gift_society = 'ACPT' THEN NULL
+				WHEN gift_society = 'APLA' THEN NULL
+				ELSE NULL END) AS rc_Bios__Code_Value__c,
+				gift_society_desc,
+				(CASE WHEN gift_society_year IS NULL
+						OR gift_society_year = 0
+						OR gift_society_year = 9999
+						OR gift_society_year = 9998 THEN '' ELSE '7/1/' + CAST("gift_society_year" - 1 AS VARCHAR(4)) END) AS rc_Bios__Start_Date__c,
+				(CASE WHEN gift_society_year IS NULL
+						OR gift_society_year = 0
+						OR gift_society_year = 9999
+						OR gift_society_year = 9998 THEN '' ELSE '6/30/' + CAST("gift_society_year" AS VARCHAR(4)) END) AS rc_Bios__End_Date__c,		
+				gift_society_year,
+				'User Defined' AS rc_Bios__Status__c,
+				'TRUE' AS rc_Bios__Active__c
+FROM [Gift Society (Descriptive, Advancement)]
+WHERE ID != 'NULL'
+order by gift_society_year ASC;
+
+
+-----------------------------------------------------------------------------------
+/*This view is for Total pledges to Annual Fund during current Fiscal Year with no gift society*/
+
+CREATE VIEW roundcorner_Pledge_Society_AF AS
+SELECT DISTINCT id + '_' + CONVERT(VARCHAR(6), ROW_NUMBER() OVER (ORDER BY ID)) AS rc_Bios__External_ID__c,
+				id AS rc_Bios__Contact__c,
+				(CASE WHEN pledge_society = 'DHPH' THEN 'AFP-T'
+				WHEN pledge_society = 'DHGR' THEN 'AFP-S'
+				WHEN pledge_society = 'DHFL' THEN 'AFP-Q'
+				WHEN pledge_society = 'DHBN' THEN 'AFP-O'
+				WHEN pledge_society = 'DHST' THEN 'AFP-N'
+				WHEN pledge_society = 'DHPT' THEN 'AFP-M'
+				WHEN pledge_society = 'RBPA' THEN 'AFP-L'
+				WHEN pledge_society = 'RBSR' THEN 'AFP-K'
+				WHEN pledge_society = 'RBAS' THEN 'AFP-J'
+				WHEN pledge_society = 'RBMR' THEN 'AFP-I'
+				WHEN pledge_society = 'DEAN' THEN 'AFP-H'
+				WHEN pledge_society = 'CLST' THEN 'AFP-G'
+				WHEN pledge_society = 'TOWR' THEN 'AFP-F'
+				WHEN pledge_society = 'LOYC' THEN 'AFP-E'
+				WHEN pledge_society = 'DNR2' THEN 'AFP-D'
+				ELSE NULL END) AS rc_Bios__Code_Value__c,
+				(CASE WHEN pledge_society_year IS NULL
+						OR pledge_society_year = 0
+						OR pledge_society_year = 9999
+						OR pledge_society_year = 9998 THEN '' ELSE '7/1/' + CAST("pledge_society_year" - 1 AS VARCHAR(4)) END) AS rc_Bios__Start_Date__c,
+				(CASE WHEN pledge_society_year IS NULL
+						OR pledge_society_year = 0
+						OR pledge_society_year = 9999
+						OR pledge_society_year = 9998 THEN '' ELSE '6/30/' + CAST("pledge_society_year" AS VARCHAR(4)) END) AS rc_Bios__End_Date__c,		
+				'User Defined' AS rc_Bios__Status__c,
+				'TRUE' AS rc_Bios__Active__c
+FROM roundCorner_pledge_society_af;
+
+
+-------------------------------------------
+/*This view is for Total Pledges to Athletics during current fiscal year with no gift society*/
+
+CREATE VIEW roundcorner_Pledge_Society_ATH AS
+SELECT DISTINCT id + '_' + CONVERT(VARCHAR(6), ROW_NUMBER() OVER (ORDER BY ID)) AS rc_Bios__External_ID__c,
+				id AS rc_Bios__Contact__c,
+				(CASE WHEN pledge_society = 'AHAL' THEN 'LCP-P'
+				WHEN pledge_society = 'ALEG' THEN 'LCP-N'
+				WHEN pledge_society = 'AALL' THEN 'LCP-M'
+				WHEN pledge_society = 'ACMP' THEN 'LCP-K'
+				WHEN pledge_society = 'AMVP' THEN 'LCP-I'
+				WHEN pledge_society = 'ALYX' THEN 'LCP-G'
+				WHEN pledge_society = 'ASTR' THEN 'LCP-F'
+				WHEN pledge_society = 'ACPT' THEN 'LCP-E'
+				WHEN pledge_society = 'APLA' THEN 'LCP-D'
+				ELSE NULL END) AS rc_Bios__Code_Value__c,
+				(CASE WHEN pledge_society_year IS NULL
+						OR pledge_society_year = 0
+						OR pledge_society_year = 9999
+						OR pledge_society_year = 9998 THEN '' ELSE '7/1/' + CAST("pledge_society_year" - 1 AS VARCHAR(4)) END) AS rc_Bios__Start_Date__c,
+				(CASE WHEN pledge_society_year IS NULL
+						OR pledge_society_year = 0
+						OR pledge_society_year = 9999
+						OR pledge_society_year = 9998 THEN '' ELSE '6/30/' + CAST("pledge_society_year" AS VARCHAR(4)) END) AS rc_Bios__End_Date__c,		
+				'User Defined' AS rc_Bios__Status__c,
+				'TRUE' AS rc_Bios__Active__c
+FROM roundCorner_pledge_society_ath;
