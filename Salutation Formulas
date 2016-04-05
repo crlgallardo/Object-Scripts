@@ -1,0 +1,238 @@
+Account
+Salutation: Casual
+
+--Version 1---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+IF(ISBLANK(rC_Bios__Secondary_Contact__c), 
+
+IF(ISBLANK(rC_Bios__Preferred_Contact__r.Preferred_First_Name__c), rC_Bios__Preferred_Contact__r.FirstName, rC_Bios__Preferred_Contact__r.Preferred_First_Name__c), 
+
+IF(ISBLANK(rC_Bios__Secondary_Contact__r.Preferred_First_Name__c), rC_Bios__Secondary_Contact__r.FirstName, rC_Bios__Secondary_Contact__r.Preferred_First_Name__c) & " and " & 
+IF(ISBLANK(rC_Bios__Preferred_Contact__r.Preferred_First_Name__c), rC_Bios__Preferred_Contact__r.FirstName, rC_Bios__Preferred_Contact__r.Preferred_First_Name__c) 
+)
+
+--Version 2 (IN USE)---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+IF(ISBLANK(rC_Bios__Secondary_Contact__c),
+
+	rC_Bios__Preferred_Contact__r.Preferred_First_Name__c,
+
+	IF( AND( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c )= "Female", TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Male"),
+	
+		rC_Bios__Secondary_Contact__r.Preferred_First_Name__c & " and " & rC_Bios__Preferred_Contact__r.Preferred_First_Name__c,
+
+		IF( AND( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c )= "Male", TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Female"),
+
+			rC_Bios__Preferred_Contact__r.Preferred_First_Name__c & " and " & rc_Bios__Secondary_Contact__r.Preferred_First_Name__c,
+
+			IF( AND( TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c )= "Female", TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Female"),
+
+				rC_Bios__Preferred_Contact__r.Preferred_First_Name__c & " and " & rc_Bios__Secondary_Contact__r.Preferred_First_Name__c,
+
+				rC_Bios__Preferred_Contact__r.Preferred_First_Name__c & " and " & rc_Bios__Secondary_Contact__r.Preferred_First_Name__c)
+				)))
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Account
+Salutation: Formal
+
+--Version 1 (IN USE)---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+IF(ISBLANK(rC_Bios__Secondary_Contact__c),
+
+	TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.LastName ,
+
+	IF( AND( TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c )= "Male", TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Preferred_Contact__r.LastName = rC_Bios__Secondary_Contact__r.LastName),
+
+		TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " and " & TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.LastName ,
+
+		IF( AND( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c )= "Male", TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Secondary_Contact__r.LastName = rC_Bios__Preferred_Contact__r.LastName),
+
+			TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " and " & TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.LastName ,
+
+			IF( AND( TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c )= "Male", TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Preferred_Contact__r.LastName <> rC_Bios__Secondary_Contact__r.LastName),
+
+				TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.LastName & " and " & TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.LastName ,
+
+				IF( AND( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c )= "Male", TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Secondary_Contact__r.LastName <> rC_Bios__Preferred_Contact__r.LastName),
+
+					TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.LastName & " and " & TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.LastName ,
+
+					TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.LastName & " and " & TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.LastName)
+
+					))))
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Account
+Salutation: Formal Address Name
+
+--Pre-Version---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.FirstName & " " & 
+BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName
+
+--Version 1 (IN USE)---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+IF(ISBLANK(rC_Bios__Secondary_Contact__c),
+
+	TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName ,
+
+	IF( AND( TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Male", TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Preferred_Contact__r.LastName = rC_Bios__Secondary_Contact__r.LastName),
+
+		TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " and " & TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & 
+			rC_Bios__Preferred_Contact__r.LastName ,
+	
+		IF( AND( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Male", TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Secondary_Contact__r.LastName = rC_Bios__Preferred_Contact__r.LastName),
+
+			TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " and " & TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & 
+				rC_Bios__Secondary_Contact__r.LastName ,
+
+			IF( AND( TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Male", TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Preferred_Contact__r.LastName <> rC_Bios__Secondary_Contact__r.LastName),
+
+				TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName & " and " & 
+							TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName,
+	
+				IF( AND( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Male", TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Female", rC_Bios__Secondary_Contact__r.LastName <> rC_Bios__Preferred_Contact__r.LastName),
+
+					TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName & " and " & 
+							TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName,
+
+					TEXT(rC_Bios__Preferred_Contact__r.Salutation) & " " & rC_Bios__Preferred_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName & " and " & 
+							TEXT(rC_Bios__Secondary_Contact__r.Salutation) & " " & rC_Bios__Secondary_Contact__r.FirstName & " " & BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName)
+
+						
+							))))
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Contact
+Salutation: Gift Society Name
+
+--Version 1---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+IF( TEXT(rC_Bios__Gender__c) = "Male", 
+
+	FirstName & " " & Middle_Initial__c & " " & LastName, 
+
+	IF( ISBLANK(rC_Bios__Maiden_Name__c), FirstName & " " & Middle_Initial__c & " " & LastName, FirstName & " " & rC_Bios__Maiden_Name__c & " " & LastName)
+
+	)
+
+
+--Version 2-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+IF( NOT(ISBLANK(Salutation_Gift_Society_Name_Override__c)), 
+
+Salutation_Gift_Society_Name_Override__c, 
+
+	IF( TEXT(rC_Bios__Gender__c) = "Male", 
+
+	FirstName & " " & BLANKVALUE(Middle_Initial__c, NULL) & " " & LastName, 
+
+		IF( ISBLANK(rC_Bios__Maiden_Name__c), 
+
+		FirstName & " " & Middle_Initial__c & " " & LastName, 
+
+			IF(rC_Bios__Maiden_Name__c = LastName, 
+
+			FirstName & " " & BLANKVALUE(Middle_Initial__c, NULL) & " " & LastName, 
+
+			FirstName & " " & rC_Bios__Maiden_Name__c & " " & LastName) 
+
+)))
+
+
+
+--Version 3 (IN USE)---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+FYI: I created a custom field called Salutation: Gift Society Name Override. 
+
+
+
+IF( NOT(ISBLANK(Salutation_Gift_Society_Name_Override__c)), 
+	Salutation_Gift_Society_Name_Override__c &" "& Salutation_PGPY__c,
+
+IF( AND(TEXT(rC_Bios__Gender__c) = "Male", ISBLANK(Education__c)), 
+
+	FirstName & " " & BLANKVALUE(Middle_Initial__c, NULL) & " " & LastName &" "& Salutation_PGPY__c, 
+
+	IF( AND(ISBLANK(rC_Bios__Maiden_Name__c), ISBLANK(Education__c)), 
+ 
+        FirstName & " " & Middle_Initial__c & " " & LastName &" "& Salutation_PGPY__c,
+
+              IF( AND(rC_Bios__Maiden_Name__c = LastName, ISBLANK(Education__c)), 
+
+              FirstName & " " & BLANKVALUE(Middle_Initial__c, NULL) & " " & LastName &" "& Salutation_PGPY__c,
+
+              		IF( ISBLANK(Education__c),
+
+              		FirstName & " " & rC_Bios__Maiden_Name__c & " " & LastName &" "& Salutation_PGPY__c, 
+
+              				IF(TEXT(rC_Bios__Gender__c) = "Male", 
+
+							FirstName & " " & BLANKVALUE(Middle_Initial__c, NULL) & " " & LastName &" '"& RIGHT(Education__r.rC_Education__Class_Year__c,2) &" "& Salutation_PGPY__c, 
+
+								IF( ISBLANK(rC_Bios__Maiden_Name__c), 
+ 
+        						FirstName & " " & Middle_Initial__c & " " & LastName &" '"& RIGHT(Education__r.rC_Education__Class_Year__c,2) &" "& Salutation_PGPY__c,
+
+              						IF( rC_Bios__Maiden_Name__c = LastName, 
+
+              						FirstName & " " & BLANKVALUE(Middle_Initial__c, NULL) & " " & LastName &" '"& RIGHT(Education__r.rC_Education__Class_Year__c,2) &" "& Salutation_PGPY__c,
+
+              						FirstName & " " & rC_Bios__Maiden_Name__c & " " & LastName &" '"& RIGHT(Education__r.rC_Education__Class_Year__c,2) &" "& Salutation_PGPY__c)
+
+
+
+	)))))))
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Contact
+Salutation: Casual
+
+--Version 1 (IN USE)---------------------
+	 
+Preferred_First_Name__c
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Contact
+Salutation: Formal
+
+--Version 1 (IN USE)----------------------------
+
+TEXT(Salutation) & " " & LastName
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Contact
+Salutation: Address Formal
+
+--Version 1 (IN USE)--------------------------------------------------------------------
+
+TEXT(Salutation) & " " & FirstName & " " & Middle_Initial__c & " " & LastName
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Contact
+Salutation: Name Badge
+
+--Version 1 (IN USE)--------------------------------------------------------------------
+
+IF(AND(ISBLANK(rC_Bios__Maiden_Name__c),ISBLANK(Education__c)), 
+
+Preferred_First_Name__c &" "& LastName &" "& Salutation_PGPY__c, 
+
+IF(ISBLANK(Education__c), 
+
+Preferred_First_Name__c &" "& rC_Bios__Maiden_Name__c &" "& LastName &" "& Salutation_PGPY__c, 
+
+IF(ISBLANK(rC_Bios__Maiden_Name__c), 
+
+Preferred_First_Name__c &" "& LastName &" '"& RIGHT(Education__r.rC_Education__Class_Year__c,2) &" "& Salutation_PGPY__c, 
+
+Preferred_First_Name__c &" "& rC_Bios__Maiden_Name__c &" "& LastName & " '" & RIGHT(Education__r.rC_Education__Class_Year__c,2) & " " & Salutation_PGPY__c 
+
+)))
