@@ -1,0 +1,15 @@
+Account Salutations
+-------------------------------------------------------------------
+Informal_Joint_Salutation__c; Informal_Joint_Salutation_Override__c
+-------------------------------------------------------------------
+IF( NOT( ISBLANK(Informal_Joint_Salutation_Override__c)), 
+  Informal_Joint_Salutation_Override__c, 
+  IF( ISBLANK(rC_Bios__Secondary_Contact__c), 
+    rC_Bios__Preferred_Contact__r.Preferred_Name__c, 
+    IF(AND(TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Male", TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Female"), 
+      rC_Bios__Preferred_Contact__r.Preferred_Name__c &" and "& rC_Bios__Secondary_Contact__r.Preferred_Name__c, 
+      IF(AND( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c) = "Male", TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c) = "Female"), 
+        rC_Bios__Secondary_Contact__r.Preferred_Name__c &" and "& rC_Bios__Preferred_Contact__r.Preferred_Name__c, 
+        rC_Bios__Preferred_Contact__r.Preferred_Name__c &" and "& rC_Bios__Secondary_Contact__r.Preferred_Name__c 
+
+))))
