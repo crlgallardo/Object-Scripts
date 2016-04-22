@@ -48,13 +48,15 @@ IF( AND(NOT(ISBLANK(Mail_Label_Line_1_Override__c)), ISBLANK(Mail_Label_Line_2_O
 IF(NOT(ISBLANK(Mail_Label_Line_2_Override__c)),
   Mail_Label_Line_2_Override__c,
   IF( AND(NOT(ISBLANK(Mail_Label_Line_1_Override__c)), ISBLANK(Mail_Label_Line_2_Override__c)),
-    "",
-    IF( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c)='Female',
-      TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName,
-      IF( TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c)='Female',
-        TEXT(rC_Bios__Preferred_Contact__r.Salutation) &" "& rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName,
-        TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName
-))))
+    NULL,
+    IF( ISBLANK(rC_Bios__Secondary_Contact__c),
+      NULL,
+      IF( TEXT(rC_Bios__Secondary_Contact__r.rC_Bios__Gender__c)='Female',
+        TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName,
+        IF( TEXT(rC_Bios__Preferred_Contact__r.rC_Bios__Gender__c)='Female',
+          TEXT(rC_Bios__Preferred_Contact__r.Salutation) &" "& rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName,
+          TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName
+)))))
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 Alumni_Informal_Joint_Salutation__c; Alumni_Informal_Joint_Override__c
@@ -87,13 +89,15 @@ IF( AND(NOT(ISBLANK(Alumni_Mail_Label_Line_1_Override__c)), ISBLANK(Alumni_Mail_
 IF(NOT(ISBLANK(Alumni_Mail_Label_Line_2_Override__c)),
   Alumni_Mail_Label_Line_2_Override__c,
   IF( AND(NOT(ISBLANK(Alumni_Mail_Label_Line_1_Override__c)), ISBLANK(Alumni_Mail_Label_Line_2_Override__c)),
-    "",
-    IF( AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate' ,rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'),
-      TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName,
-      IF( AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c!='Alumni-Graduate', rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'),
-        TEXT(rC_Bios__Preferred_Contact__r.Salutation) &" "& rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName,
-        TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName
-))))
+    NULL,
+    IF( ISBLANK(rC_Bios__Secondary_Contact__c),
+      NULL,
+      IF( AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate' ,rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'),
+        TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName,
+        IF( AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c!='Alumni-Graduate', rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'),
+          TEXT(rC_Bios__Preferred_Contact__r.Salutation) &" "& rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName,
+          TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName
+)))))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Contact Salutations
@@ -118,11 +122,13 @@ By_ID_Informal_Joint_Salutation__c; By_ID_Informal_Joint_Salutation_Override__c
 -------------------------------------------------------------------
 IF( NOT(ISBLANK(By_ID_Informal_Joint_Salutation_Override__c)),
   By_ID_Informal_Joint_Salutation_Override__c,
-  IF(rC_Bios__Preferred_Contact__c = TRUE,
-    Preferred_Name__c &" and "& Account.rC_Bios__Secondary_Contact__r.Preferred_Name__c,
-    IF(rC_Bios__Secondary_Contact__c = TRUE,
-      Preferred_Name__c &" and "& Account.rC_Bios__Preferred_Contact__r.Preferred_Name__c,
-      ""
+  IF( ISBLANK(Account.rC_Bios__Secondary_Contact__c),
+    Preferred_Name__c,
+    IF(rC_Bios__Preferred_Contact__c = TRUE,
+      Preferred_Name__c &" and "& Account.rC_Bios__Secondary_Contact__r.Preferred_Name__c,
+      IF(rC_Bios__Secondary_Contact__c = TRUE,
+        Preferred_Name__c &" and "& Account.rC_Bios__Preferred_Contact__r.Preferred_Name__c,
+        NULL
 )))
 -------------------------------------------------------------------
 -------------------------------------------------------------------
@@ -139,9 +145,11 @@ IF(NOT(ISBLANK(By_ID_Mail_Label_Line_2_Override__c)),
   By_ID_Mail_Label_Line_2_Override__c,
   IF( AND(NOT(ISBLANK(By_ID_Mail_Label_Line_1_Override__c)), ISBLANK(By_ID_Mail_Label_Line_2_Override__c)),
     NULL,
-    IF(rC_Bios__Secondary_Contact__c=FALSE,
-      TEXT(Account.rC_Bios__Secondary_Contact__r.Salutation) &" "& Account.rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(Account.rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & Account.rC_Bios__Secondary_Contact__r.LastName,
-      IF(rC_Bios__Preferred_Contact__c=FALSE,
-        TEXT(Account.rC_Bios__Preferred_Contact__r.Salutation) &" "& Account.rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(Account.rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & Account.rC_Bios__Preferred_Contact__r.LastName,
-        NULL
-))))
+    IF( ISBLANK(Account.rC_Bios__Secondary_Contact__c),
+      NULL, 
+      IF(rC_Bios__Secondary_Contact__c=FALSE,
+        TEXT(Account.rC_Bios__Secondary_Contact__r.Salutation) &" "& Account.rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(Account.rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & Account.rC_Bios__Secondary_Contact__r.LastName,
+        IF(rC_Bios__Preferred_Contact__c=FALSE,
+          TEXT(Account.rC_Bios__Preferred_Contact__r.Salutation) &" "& Account.rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(Account.rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & Account.rC_Bios__Preferred_Contact__r.LastName,
+          NULL
+)))))
