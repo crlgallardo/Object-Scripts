@@ -65,9 +65,9 @@ IF(NOT(ISBLANK(Alumni_Informal_Joint_Override__c)),
   Alumni_Informal_Joint_Override__c,
   IF( ISBLANK(rC_Bios__Secondary_Contact__c),
     rC_Bios__Preferred_Contact__r.Preferred_Name__c,
-    IF(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',
+    IF(OR(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Nongraduate'),
       rC_Bios__Preferred_Contact__r.Preferred_Name__c &" and "& rC_Bios__Secondary_Contact__r.Preferred_Name__c,
-      IF(rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',
+      IF(OR(rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Nongraduate'),
         rC_Bios__Secondary_Contact__r.Preferred_Name__c &" and "& rC_Bios__Preferred_Contact__r.Preferred_Name__c,
         rC_Bios__Preferred_Contact__r.Preferred_Name__c &" and "& rC_Bios__Secondary_Contact__r.Preferred_Name__c
 ))))
@@ -79,9 +79,9 @@ IF( AND(NOT(ISBLANK(Alumni_Mail_Label_Line_1_Override__c)), ISBLANK(Alumni_Mail_
   Alumni_Mail_Label_Line_1_Override__c,
   IF( AND(NOT(ISBLANK(Alumni_Mail_Label_Line_1_Override__c)), NOT(ISBLANK(Alumni_Mail_Label_Line_2_Override__c))),
     Alumni_Mail_Label_Line_1_Override__c,
-    IF(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',
+    IF(OR(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Nongraduate'),
       TEXT(rC_Bios__Preferred_Contact__r.Salutation) &" "& rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName,
-      IF(rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',
+      IF(OR(rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Nongraduate'),
         TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName,
         TEXT(rC_Bios__Preferred_Contact__r.Salutation) &" "& rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName
 ))))
@@ -92,9 +92,9 @@ IF(NOT(ISBLANK(Alumni_Mail_Label_Line_2_Override__c)),
     NULL,
     IF( ISBLANK(rC_Bios__Secondary_Contact__c),
       NULL,
-      IF( AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate' ,rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'),
+      IF( OR(AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate',rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'), AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Nongraduate',rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Nongraduate')),
         TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName,
-        IF( AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c!='Alumni-Graduate', rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'),
+        IF( OR(AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c!='Alumni-Graduate', rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Graduate'),AND(rC_Bios__Preferred_Contact__r.rC_Bios__Primary_Constituent_Type__c!='Alumni-Nongraduate', rC_Bios__Secondary_Contact__r.rC_Bios__Primary_Constituent_Type__c='Alumni-Nongraduate')),
           TEXT(rC_Bios__Preferred_Contact__r.Salutation) &" "& rC_Bios__Preferred_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Preferred_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Preferred_Contact__r.LastName,
           TEXT(rC_Bios__Secondary_Contact__r.Salutation) &" "& rC_Bios__Secondary_Contact__r.FirstName &" "& BLANKVALUE(rC_Bios__Secondary_Contact__r.Middle_Initial__c, NULL) & " " & rC_Bios__Secondary_Contact__r.LastName
 )))))
