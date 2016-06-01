@@ -187,4 +187,280 @@ FROM roundcorner_Constituent_Activity_Preferences
 ORDER BY rc_Bios__Start_Date__c ASC;
 
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ROUNDCORNER_EXCLUSION_PREFERENCES SCRIPT
 
+SELECT *
+FROM [Exclusions (Descriptive, Advancement)]
+--WHERE exclude_all_ind IS NOT NULL
+--WHERE do_not_solicit_ind IS NOT NULL
+--WHERE exclude_phonathon_ind IS NOT NULL
+--WHERE exclude_phone_solicitation_ind IS NOT NULL
+--WHERE exclude_annual_fund_ind IS NOT NULL 
+--WHERE exclude_email_solicitation_ind IS NOT NULL
+--WHERE exclude_mail_solicitation_ind IS NOT NULL
+--WHERE exclude_event_invitations_ind IS NOT NULL
+--WHERE exclude_all_phone_contact_ind IS NOT NULL
+--WHERE exclude_all_mail_contact_ind IS NOT NULL
+--WHERE exclude_all_email_contact_ind IS NOT NULL
+--WHERE exclude_magazine_ind IS NOT NULL
+--WHERE no_career_emails IS NOT NULL
+--WHERE no_event_emails IS NOT NULL
+--WHERE no_memorial_emails IS NOT NULL
+--WHERE no_newsletter_emails IS NOT NULL
+--WHERE no_athletic_solicitation IS NOT NULL
+--WHERE no_general_emails IS NOT NULL
+WHERE no_athletic_event_emails IS NOT NULL
+
+/*1_Staging Script for Exclude All (28,980)*/
+SELECT id + '_' + 'EXALL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_ind = 'Y' THEN 'EXALL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_ind IS NOT NULL;
+
+/*2_Staging Script for Do Not Solicit (33,520)*/
+SELECT id + '_' + 'EXDNS' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN do_not_solicit_ind = 'Y' THEN 'EXDNS' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE do_not_solicit_ind IS NOT NULL;
+
+/*3_Staging Script for Exclude Phonathon (2,273)*/
+SELECT id + '_' + 'EXPHTHN' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_phonathon_ind = 'Y' THEN 'EXPHTHN' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_phonathon_ind IS NOT NULL;
+
+/*4_Staging Script for Exclude Phone Solicitation (1,387)*/
+SELECT id + '_' + 'EXPHSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_phone_solicitation_ind = 'Y' THEN 'EXPHSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_phone_solicitation_ind IS NOT NULL;
+
+/*5_Staging Script for Exclude Annual Fund (653)*/
+SELECT id + '_' + 'EXANLFND' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_annual_fund_ind = 'Y' THEN 'EXANLFND' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_annual_fund_ind IS NOT NULL;
+
+/*6_Staging Script for Exclude Email Solicitation (467)*/
+SELECT id + '_' + 'EXEMSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_email_solicitation_ind = 'Y' THEN 'EXEMSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_email_solicitation_ind IS NOT NULL;
+
+/*7_Staging Script for Exclude Mail Solicitation (269)*/
+SELECT id + '_' + 'EXMLSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_mail_solicitation_ind = 'Y' THEN 'EXMLSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_mail_solicitation_ind IS NOT NULL;
+
+/*8_Staging Script for Exclude Event Invitations (47)*/
+SELECT id + '_' + 'EXEVNTINV' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_event_invitations_ind = 'Y' THEN 'EXEVNTINV' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_event_invitations_ind IS NOT NULL;
+
+/*9_Staging Script for Exclude All Phone Contact (595)*/
+SELECT id + '_' + 'EXALLPHN' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_phone_contact_ind = 'Y' THEN 'EXALLPHN' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_phone_contact_ind IS NOT NULL;
+
+/*10_Staging Script for Exclude All Mail Contact (42)*/
+SELECT id + '_' + 'EXALLML' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_mail_contact_ind = 'Y' THEN 'EXALLML' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_mail_contact_ind IS NOT NULL;
+
+/*11_Staging Script for Exclude All Email Contact (74)*/
+SELECT id + '_' + 'EXALLEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_email_contact_ind = 'Y' THEN 'EXALLEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_email_contact_ind IS NOT NULL;
+
+/*12_Staging Script for Exclude Magazine (3,036)*/
+SELECT id + '_' + 'EXMAG' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_magazine_ind = 'Y' THEN 'EXMAG' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_magazine_ind IS NOT NULL;
+
+/*13_Staging Script for No Career Emails (54)*/
+SELECT id + '_' + 'NOCARREM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_career_emails = 'Y' THEN 'NOCARREM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_career_emails IS NOT NULL;
+
+/*14_Staging Script for No Event Emails (288)*/
+SELECT id + '_' + 'NOEVNTEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_event_emails = 'Y' THEN 'NOEVNTEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_event_emails IS NOT NULL;
+
+/*15_Staging Script for No Memorial Emails (84)*/
+SELECT id + '_' + 'NOMMRLEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_memorial_emails = 'Y' THEN 'NOMMRLEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_memorial_emails IS NOT NULL;
+
+/*16_Staging Script for No Newsletter Emails (117)*/
+SELECT id + '_' + 'NONWLTREM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_newsletter_emails = 'Y' THEN 'NONWLTREM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_newsletter_emails IS NOT NULL;
+
+/*17_Staging Script for No Athletic Solicitation (480)*/
+SELECT id + '_' + 'NOATHLSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_athletic_solicitation = 'Y' THEN 'NOATHLSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_athletic_solicitation IS NOT NULL;
+
+/*18_Staging Script for No General Emails (77)*/
+SELECT id + '_' + 'NOGNRLEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_general_emails = 'Y' THEN 'NOGNRLEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_general_emails IS NOT NULL;
+
+/*19_Staging Script for No Athletic Event Emails (32)*/
+SELECT id + '_' + 'NOATHLEVEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_athletic_event_emails = 'Y' THEN 'NOATHLEVEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_athletic_event_emails IS NOT NULL;
+
+-------------------------------------------------------------------------------------------------------------------
+CREATE VIEW roundcorner_Exclusion_Preferences AS
+SELECT id + '_' + 'EXALL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_ind = 'Y' THEN 'EXALL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXDNS' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN do_not_solicit_ind = 'Y' THEN 'EXDNS' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE do_not_solicit_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXPHTHN' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_phonathon_ind = 'Y' THEN 'EXPHTHN' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_phonathon_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXPHSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_phone_solicitation_ind = 'Y' THEN 'EXPHSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_phone_solicitation_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXANLFND' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_annual_fund_ind = 'Y' THEN 'EXANLFND' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_annual_fund_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXEMSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_email_solicitation_ind = 'Y' THEN 'EXEMSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_email_solicitation_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXMLSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_mail_solicitation_ind = 'Y' THEN 'EXMLSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_mail_solicitation_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXEVNTINV' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_event_invitations_ind = 'Y' THEN 'EXEVNTINV' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_event_invitations_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXALLPHN' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_phone_contact_ind = 'Y' THEN 'EXALLPHN' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_phone_contact_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXALLML' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_mail_contact_ind = 'Y' THEN 'EXALLML' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_mail_contact_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXALLEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_all_email_contact_ind = 'Y' THEN 'EXALLEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_all_email_contact_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'EXMAG' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN exclude_magazine_ind = 'Y' THEN 'EXMAG' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE exclude_magazine_ind IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'NOCARREM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_career_emails = 'Y' THEN 'NOCARREM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_career_emails IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'NOEVNTEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_event_emails = 'Y' THEN 'NOEVNTEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_event_emails IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'NOMMRLEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_memorial_emails = 'Y' THEN 'NOMMRLEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_memorial_emails IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'NONWLTREM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_newsletter_emails = 'Y' THEN 'NONWLTREM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_newsletter_emails IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'NOATHLSOL' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_athletic_solicitation = 'Y' THEN 'NOATHLSOL' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_athletic_solicitation IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'NOGNRLEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_general_emails = 'Y' THEN 'NOGNRLEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_general_emails IS NOT NULL
+UNION ALL
+SELECT id + '_' + 'NOATHLEVEM' AS rc_Bios__External_ID__c,
+		id AS rc_Bios__Contact__c, 
+		(CASE WHEN no_athletic_event_emails = 'Y' THEN 'NOATHLEVEM' ELSE '' END) AS rc_Bios__Code_Value__c
+FROM [Exclusions (Descriptive, Advancement)]
+WHERE no_athletic_event_emails IS NOT NULL;
+
+SELECT COUNT(*)
+FROM roundcorner_Exclusion_Preferences;
